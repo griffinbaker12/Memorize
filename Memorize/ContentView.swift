@@ -9,6 +9,13 @@ import SwiftUI
 
 // declaring a type here named ContentView, and it is a struct
 struct ContentView: View {
+//    var body: VStack<TupleView<(Text, Text, Image)>> {
+//    var body: VStack<TupleView<(Text, Text)>> {
+//        VStack {
+//            Text("hey")
+//            Text("hey")
+//        }
+//    }
     var body: some View {
         HStack {
             // this was just like the default that we passed the Image, we just overwrote the default
