@@ -9,17 +9,16 @@ import SwiftUI
 
 // declaring a type here named ContentView, and it is a struct
 struct ContentView: View {
-//    var body: VStack<TupleView<(Text, Text, Image)>> {
-//    var body: VStack<TupleView<(Text, Text)>> {
-//        VStack {
-//            Text("hey")
-//            Text("hey")
-//        }
+//    var body: Text {
+//        // actually awesome that SwiftUI will create the TupleView for us here...
+//        Text("hey")
+//        Text("yo")
 //    }
+    
+    // putting View here makes no sense, because we are supposed to be telling the compiler what View we actually want to return here
     var body: some View {
         HStack {
-            // this was just like the default that we passed the Image, we just overwrote the default
-            CardView(isFaceUp: true)
+            CardView(isFaceUp: false)
             CardView()
             CardView()
             CardView()
@@ -30,20 +29,27 @@ struct ContentView: View {
 }
 
 struct CardView: View {
-    var isFaceUp: Bool = false
+    // @State creates a pointer, the pointer itself never changes; the thing it points to can change, so satisfies the requirement that the View can't change, but isFaceUp can change
+    @State var isFaceUp = false
+    
     var body: some View {
         ZStack {
+            let base = RoundedRectangle(cornerRadius: 12)
             if isFaceUp {
-                RoundedRectangle(cornerRadius: 12)
-                    .foregroundColor(.white)
-                RoundedRectangle(cornerRadius: 12)
-                    .strokeBorder(lineWidth: 2)
-                Text("👻")
-                    .font(.largeTitle)
+                base.fill(.white)
+                base.strokeBorder(lineWidth: 2)
+                Text("👻").font(.largeTitle)
             } else {
                 // this percolates from above
-                RoundedRectangle(cornerRadius: 12)
+                // don't need the .fill modifier, but that is what is happening above
+                base.fill()
             }
+        }
+        .onTapGesture {
+            // self, or the view itself in this case, is immutable...and even thought that is a var, that "varness" is only at the very beginning (without the @State)
+            // @State is for small things, like flipping the card over, not the state of the game or anything like that
+//            isFaceUp = !isFaceUp
+            isFaceUp.toggle()
         }
     }
 }
