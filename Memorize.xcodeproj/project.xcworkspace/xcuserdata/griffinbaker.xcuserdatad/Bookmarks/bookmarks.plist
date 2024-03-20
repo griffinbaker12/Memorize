@@ -12,13 +12,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>19</string>
+					<string>22</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>19</string>
+					<string>21</string>
 					<key>Timestamp</key>
-					<string>732652724.15555</string>
+					<string>732655104.7420191</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -34,14 +34,15 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string></string>
+				<string>            Spacer()
+</string>
 				<key>leading</key>
-				<string>                CardView(content: emojis[index])
+				<string>                cards
             }
 </string>
 				<key>trailing</key>
-				<string>        }
-        .foregroundColor(.orange)
+				<string>            cardCountAdjusters
+        }
         .padding()
 </string>
 			</dict>
