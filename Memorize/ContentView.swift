@@ -9,19 +9,14 @@ import SwiftUI
 
 // declaring a type here named ContentView, and it is a struct
 struct ContentView: View {
-//    var body: Text {
-//        // actually awesome that SwiftUI will create the TupleView for us here...
-//        Text("hey")
-//        Text("yo")
-//    }
-    
+    let emojis = ["👻", "🎃", "🕷️",  "😈"]
+
     // putting View here makes no sense, because we are supposed to be telling the compiler what View we actually want to return here
     var body: some View {
         HStack {
-            CardView(isFaceUp: false)
-            CardView()
-            CardView()
-            CardView()
+            ForEach(emojis.indices, id: \.self) { index in
+                CardView(content: emojis[index])
+            }
         }
         .foregroundColor(.orange)
         .padding()
@@ -29,8 +24,9 @@ struct ContentView: View {
 }
 
 struct CardView: View {
+    let content: String
     // @State creates a pointer, the pointer itself never changes; the thing it points to can change, so satisfies the requirement that the View can't change, but isFaceUp can change
-    @State var isFaceUp = false
+    @State var isFaceUp = true
     
     var body: some View {
         ZStack {
@@ -38,7 +34,7 @@ struct CardView: View {
             if isFaceUp {
                 base.fill(.white)
                 base.strokeBorder(lineWidth: 2)
-                Text("👻").font(.largeTitle)
+                Text(content).font(.largeTitle)
             } else {
                 // this percolates from above
                 // don't need the .fill modifier, but that is what is happening above
