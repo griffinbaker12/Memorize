@@ -9,6 +9,8 @@ import SwiftUI
 
 // declaring a type here named ContentView, and it is a struct
 struct ContentView: View {
+    var viewModel: EmojiMemoryGame
+    
     let emojis = ["👻", "🎃", "🕷️", "😈", "🧛", "👽", "🤖", "🧟", "💀", "👹", "🕹️", "🪩"];
     
     // putting View here makes no sense, because we are supposed to be telling the compiler what View we actually want to return here
