@@ -12,13 +12,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>22</string>
+					<string>19</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>21</string>
+					<string>18</string>
 					<key>Timestamp</key>
-					<string>732655104.7420191</string>
+					<string>732774289.682611</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -34,16 +34,16 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string>            Spacer()
+				<string>        .padding()
 </string>
 				<key>leading</key>
-				<string>                cards
-            }
+				<string>            cards
+        }
 </string>
 				<key>trailing</key>
-				<string>            cardCountAdjusters
-        }
-        .padding()
+				<string>    }
+    
+    var cards: some View {
 </string>
 			</dict>
 			<key>type</key>
