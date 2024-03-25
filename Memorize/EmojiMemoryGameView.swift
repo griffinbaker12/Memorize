@@ -11,14 +11,15 @@ import SwiftUI
 struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
     
+    private let aspectRatio: CGFloat = 2/3
+    
     // putting View here makes no sense, because we are supposed to be telling the compiler what View we actually want to return here
+    // @ViewBuilder is implicit here
     var body: some View {
         VStack {
-            ScrollView {
-                cards
-                    // needs to conform to equatable
-                    .animation(.default, value: viewModel.cards)
-            }
+            cards
+                // needs to conform to equatable
+                .animation(.default, value: viewModel.cards)
             Button("Shuffle") {
                 // view talking to the view model through an intent
                 viewModel.shuffle()
@@ -27,16 +28,15 @@ struct EmojiMemoryGameView: View {
         }
     }
     
-    var cards: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)], spacing: 0) {
-            ForEach(viewModel.cards) { card in
-                CardView(card)
-                    .aspectRatio(2/3, contentMode: .fit)
-                    .padding(4)
-                    .onTapGesture {
-                        viewModel.choose(card)
-                    }
-            }
+    // look at the content of computed property as if it was a ViewBuilder
+    private var cards: some View {
+        // takes all the space, whereas LazyVGrid only took space offered before
+        AspectVGrid(viewModel.cards, aspectRatio: aspectRatio) { card in
+            CardView(card)
+                .padding(4)
+                .onTapGesture {
+                    viewModel.choose(card)
+                }
         }
         .foregroundColor(.orange)
     }
