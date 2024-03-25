@@ -10,7 +10,7 @@
 import SwiftUI
 
 // want to list the super class before the other things that you behave like
-class EmojiMemoryGame {
+class EmojiMemoryGame: ObservableObject {
     // its whole job in a way is to understand the Model and talk to it and interpret the data and present it to the View in a really nice way
     // you can add `private` to make the sepation full b/c otherwise the view could directly edit the model
 //    private var model = MemoryGame(
@@ -25,7 +25,7 @@ class EmojiMemoryGame {
     
     private static func createMemoryGame() -> MemoryGame<String> {
         MemoryGame(
-            numberOfPairsOfCards: 4
+            numberOfPairsOfCards: 16
         ) { pairIndex in
             if emojis.indices.contains(pairIndex) {
                 return emojis[pairIndex]
@@ -40,10 +40,15 @@ class EmojiMemoryGame {
     // order properties are initialized is undetermined and not in the order of source
     // have to initialize yourself first before calling your own functions
     // return types always have to be explicit, cannot be inferred in Swift
-    private var model = createMemoryGame()
+    @Published private var model = createMemoryGame()
 
     var cards: Array<MemoryGame<String>.Card> {
         return model.cards
+    }
+    
+    // MARK: - Intents
+    func shuffle() {
+        model.shuffle()
     }
     
     // intent function
