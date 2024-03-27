@@ -15,23 +15,31 @@ struct CardView: View {
     }
     
     var body: some View {
-        Pie(endAngle: .degrees(240))
-            .opacity(Constants.Pie.opacity)
-            .overlay(
-                Text(card.content)
-                    .font(.system(size: Constants.FontSize.largest))
-                    // can scale down to 1/100th of prior size if the font is too big (but only did vertical size), so the hor was outside the card
-                    .minimumScaleFactor(Constants.FontSize.scaleFactor)
-                    // has to fit 1/1 inside 2/3
-                    .aspectRatio(1, contentMode: .fit)
-                    .multilineTextAlignment(.center)
-                    .padding(Constants.Pie.inset)
-                    .rotationEffect(.degrees(card.isMatched ? 360 : 0))
-                    .animation(.spin(for: 1), value: card.isMatched)
-            )
-            .padding(Constants.inset)
-            .cardify(faceUp: card.faceUp)
-            .opacity(card.faceUp || !card.isMatched ? 1 : 0)
+        TimelineView(.animation) { timeline in
+            if card.faceUp || !card.isMatched {
+                Pie(endAngle: .degrees(card.bonusPercentRemaining * 360))
+                    .opacity(Constants.Pie.opacity)
+                    .overlay(cardContents.padding(Constants.Pie.inset))
+                    .padding(Constants.inset)
+                    .cardify(faceUp: card.faceUp)
+                    .transition(.scale)
+            } else {
+                Color.clear
+            }
+        }
+    }
+    
+    var cardContents: some View {
+        Text(card.content)
+            .font(.system(size: Constants.FontSize.largest))
+        // can scale down to 1/100th of prior size if the font is too big (but only did vertical size), so the hor was outside the card
+            .minimumScaleFactor(Constants.FontSize.scaleFactor)
+        // has to fit 1/1 inside 2/3
+            .aspectRatio(1, contentMode: .fit)
+            .multilineTextAlignment(.center)
+            .rotationEffect(.degrees(card.isMatched ? 360 : 0))
+            .animation(.spin(for: 1), value: card.isMatched)
+        
     }
     
     private struct Constants {

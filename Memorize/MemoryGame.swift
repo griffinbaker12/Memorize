@@ -37,7 +37,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                     if cards[existingIndex].content == cards[chosenIndex].content {
                         cards[existingIndex].isMatched = true
                         cards[chosenIndex].isMatched = true
-                        score += 2
+                        score += 2 + cards[chosenIndex].bonus + cards[existingIndex].bonus
                     } else {
                         if cards[chosenIndex].hasBeenSeen {
                             score -= 1
@@ -63,18 +63,70 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
             "\(id): \(content) \(faceUp ? "up" : "down") \(isMatched ? "matched" : "")"
         }
         
-        var faceUp = false
-        var isMatched = false
-        var hasBeenSeen = false {
+        var faceUp = false {
             didSet {
+                if faceUp {
+                    startUsingBonusTime()
+                } else {
+                    stopUsingBonusTime()
+                }
                 if oldValue && !faceUp {
                     hasBeenSeen = true
                 }
             }
         }
+        var isMatched = false {
+            didSet {
+                if isMatched {
+                    stopUsingBonusTime()
+                }
+            }
+        }
+        var hasBeenSeen = false
         let content: CardContent
         
         var id: String
+        // MARK: - Bonus Time
+        
+        // call this when the card transitions to face up state
+        private mutating func startUsingBonusTime() {
+            if faceUp && !isMatched && bonusPercentRemaining > 0, lastFaceUpDate == nil {
+                lastFaceUpDate = Date()
+            }
+        }
+        
+        private mutating func stopUsingBonusTime() {
+            pastFaceUpTime = faceUpTime
+            lastFaceUpDate = nil
+        }
+        
+        var bonus: Int {
+            Int(bonusTimeLimit * bonusPercentRemaining)
+        }
+        
+        var bonusPercentRemaining: Double {
+            bonusTimeLimit > 0 ? max(0, bonusTimeLimit - faceUpTime) / bonusTimeLimit : 0
+        }
+        
+        // how long this card has ever been face up and unmatched during its lifetime
+        // basically, pastFaceUpTime + time since lastFaceUpDate
+        var faceUpTime: TimeInterval {
+            if let lastFaceUpDate {
+                return pastFaceUpTime + Date().timeIntervalSince(lastFaceUpDate)
+            } else {
+                return pastFaceUpTime
+            }
+        }
+        
+        // can be zero which would mean "no bonus available" for matching this card quickly
+        var bonusTimeLimit: TimeInterval = 6
+        
+        // the last time this card was turned face up
+        var lastFaceUpDate: Date?
+        
+        // the accumulated time this card was face up in the past
+        // (i.e. not including the current time it's been face up if it is currently so)
+        var pastFaceUpTime: TimeInterval = 0
     }
 }
 

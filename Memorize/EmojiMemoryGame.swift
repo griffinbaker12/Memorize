@@ -68,4 +68,9 @@ class EmojiMemoryGame: ObservableObject {
     func choose(_ card: MemoryGame<String>.Card) {
         model.choose(card: card)
     }
+    
+    // does not fully work
+//    func restartGame() {
+//        model = EmojiMemoryGame.createMemoryGame()
+//    }
 }
