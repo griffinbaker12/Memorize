@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// using this Generic syntax is a way to let Swift know that we will be using these types within our struct and what they must conform to
 //struct AspectVGrid<Item>: View where Item: Identifiable {
 struct AspectVGrid<Item: Identifiable, ItemView: View>: View {
     var items: [Item]
@@ -43,7 +44,6 @@ struct AspectVGrid<Item: Identifiable, ItemView: View>: View {
             // all of the cards, divided by the number of columns, starts out big!
             let width = size.width / columnCount
             let height = width / aspectRatio
-            print(width, height, size.height)
             
             // need to round up if you had 3 cards and 2 columns
             let rowCount = (count / columnCount).rounded(.up)

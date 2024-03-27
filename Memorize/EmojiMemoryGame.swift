@@ -19,6 +19,8 @@ class EmojiMemoryGame: ObservableObject {
 //        return ["👻", "🎃", "🕷️", "😈", "🧛", "👽", "🤖", "🧟", "💀", "👹", "🕹️", "🪩"][$0]
 //    }
     
+    typealias Card = MemoryGame<String>.Card
+   
     // make emojis global, but namespace it inside of the class and then make it private so only we can use it!
     // globals get initialized first, so
     private static let emojis = ["👻", "🎃", "🕷️", "😈", "🧛", "👽", "🤖", "🧟", "💀", "👹", "🕹️", "🪩"]
@@ -40,10 +42,19 @@ class EmojiMemoryGame: ObservableObject {
     // order properties are initialized is undetermined and not in the order of source
     // have to initialize yourself first before calling your own functions
     // return types always have to be explicit, cannot be inferred in Swift
+    // wouldn't actually call it this, but is just for pedagogical purposes
     @Published private var model = createMemoryGame()
 
-    var cards: Array<MemoryGame<String>.Card> {
-        return model.cards
+    var cards: Array<Card> {
+        model.cards
+    }
+    
+    var color: Color {
+        .orange
+    }
+    
+    var score: Int {
+        model.score
     }
     
     // MARK: - Intents

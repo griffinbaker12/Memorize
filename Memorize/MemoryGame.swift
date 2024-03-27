@@ -12,6 +12,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     // don't want other people interfering with game logic by flipping cards over externally but we want people to see the cards
     // using things like private and private(set) is something called access control
     private(set) var cards: Array<Card>
+    private(set) var score = 0
    
     // job of init is to initialize all of your vars
     init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
@@ -36,6 +37,14 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                     if cards[existingIndex].content == cards[chosenIndex].content {
                         cards[existingIndex].isMatched = true
                         cards[chosenIndex].isMatched = true
+                        score += 2
+                    } else {
+                        if cards[chosenIndex].hasBeenSeen {
+                            score -= 1
+                        }
+                        if cards[existingIndex].hasBeenSeen {
+                            score -= 1
+                        }
                     }
                 } else {
                     indexOfTheOneAndOnlyFaceUpCard = chosenIndex
@@ -47,7 +56,6 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     
     mutating func shuffle() {
         cards.shuffle()
-        print(cards)
     }
     
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
@@ -57,6 +65,13 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         
         var faceUp = false
         var isMatched = false
+        var hasBeenSeen = false {
+            didSet {
+                if oldValue && !faceUp {
+                    hasBeenSeen = true
+                }
+            }
+        }
         let content: CardContent
         
         var id: String
